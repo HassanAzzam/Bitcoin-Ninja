@@ -16,6 +16,6 @@ There is two ends for the game, the first is that the ninja steals the treasure 
 
 
 ## Technical Specifications
--Language: JavaScript
--Algorithms: A* Algorithm
+- Language: JavaScript
+- Algorithms: A* Algorithm
 
