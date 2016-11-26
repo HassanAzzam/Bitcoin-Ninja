@@ -1,0 +1,42 @@
+#game{
+    width:600px;
+    height:600px;
+    border: 5px solid #eee;
+    position: relative;
+}
+.cell{
+    float:left;
+    width:60px;
+    height:60px;
+    background-size: 100%;
+}
+.empty{
+    background-image: url(assets/add.svg);
+    opacity: 0.2;
+    cursor: pointer;
+}
+.empty-active{
+    opacity: 0.5;
+}
+.empty:hover{
+    opacity: 0.5;
+}
+.wall{
+    background-image: url(assets/wall.svg);
+}
+.char{
+    position: absolute;
+}
+#ninja{
+    background-image: url(assets/ninja.svg);
+    top: calc(600px - 60px);
+    left: calc(300px - 60px);
+}
+.guard{
+    background-image: url(assets/guard.svg);
+}
+#coin{
+    background-image: url(assets/coin.svg);
+    top: calc(2 * 60px);
+    left: calc(4 * 60px);
+}
