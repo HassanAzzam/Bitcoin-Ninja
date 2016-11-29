@@ -60,8 +60,8 @@ function CreateMap(){
     game.innerHTML += ('<div id="ninja" class="cell char"></div>');
     game.innerHTML += ('<div id="coin" class="cell char"></div>');
     //game.innerHTML += ('<div class="cell char guard"></div>');
-            document.getElementById("coin").style.top=""+treasure.position_x*60+"px";
-            document.getElementById("coin").style.left=""+treasure.position_y*60+"px";
+            document.getElementById("coin").style.top=""+coin.position_x*60+"px";
+            document.getElementById("coin").style.left=""+coin.position_y*60+"px";
 
             document.getElementById("ninja").style.top=""+ninja.position_x*60+"px";
             document.getElementById("ninja").style.left=""+ninja.position_y*60+"px";
