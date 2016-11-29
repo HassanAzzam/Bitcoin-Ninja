@@ -1,8 +1,13 @@
 #game{
-    width:600px;
+    width:1200px;
     height:600px;
     border: 5px solid #eee;
     position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+
 }
 .cell{
     float:left;

@@ -1,3 +1,4 @@
+var SizeX=10, SizeY=20;
 var GuardMove=[];
 function ClearQueue(){
     for(var k = GuardMove.length - 1; k >= 0; k--) {
@@ -50,11 +51,8 @@ function CreateMap(){
     var game=document.getElementById('game');
     for(var i=0;i<map.length;i++){
         for(var j=0;j<map[i].length;j++){
-            game.innerHTML += ('<div id="'+i+''+j+'" class="cell '+((map[i][j])? 'empty':'wall')+'"></div>');
-            if((i==9&&j==4)||(i==2&&j==4)) {
-                game.lastChild.classList.toggle('empty');
-                continue;
-            }
+            game.innerHTML += ('<div id="'+i+'-'+j+'" class="cell '+((map[i][j])? 'empty':'wall')+'"></div>');
+
             if(map[i][j])
             game.lastChild.setAttribute('onclick',"AddGuard(this)");
         }
@@ -62,8 +60,12 @@ function CreateMap(){
     game.innerHTML += ('<div id="ninja" class="cell char"></div>');
     game.innerHTML += ('<div id="coin" class="cell char"></div>');
     //game.innerHTML += ('<div class="cell char guard"></div>');
+            document.getElementById("coin").style.top=""+treasure.position_x*60+"px";
+            document.getElementById("coin").style.left=""+treasure.position_y*60+"px";
+
+            document.getElementById("ninja").style.top=""+ninja.position_x*60+"px";
+            document.getElementById("ninja").style.left=""+ninja.position_y*60+"px";
 }
 var map = GenerateMap();
 var guards=[];
-map[9][4]=map[2][4]=1;
 CreateMap();
