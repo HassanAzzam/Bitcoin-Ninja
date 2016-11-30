@@ -1,5 +1,4 @@
-var coin={};
-var ninja={};
+
 function GenerateMap(){
 var arr = new Array(SizeX);
     for(var i=0;i<SizeX;i++) {
@@ -17,15 +16,15 @@ var arr = new Array(SizeX);
                 }
             }
             do{
-                coin.position_x = Math.floor(Math.random()*SizeX);
-                coin.position_y = Math.floor(Math.random()*SizeY);
-            }while((coin.position_x > 5 || coin.position_y > 5)
-                || (arr[coin.position_x][coin.position_y]==0));
+                Coin.position_x = Math.floor(Math.random()*SizeX);
+                Coin.position_y = Math.floor(Math.random()*SizeY);
+            }while((Coin.position_x > 5 || Coin.position_y > 5)
+                || (arr[Coin.position_x][Coin.position_y]==0));
 
             do{
-                ninja.position_x = Math.floor(Math.random()*SizeX);
-                ninja.position_y = Math.floor(Math.random()*SizeY);
-            }while((ninja.position_x < 5 || ninja.position_y < 15) || (arr[ninja.position_x][ninja.position_y]==0));
+                Ninja.position_x = Math.floor(Math.random()*SizeX);
+                Ninja.position_y = Math.floor(Math.random()*SizeY);
+            }while((Ninja.position_x < 5 || Ninja.position_y < 15) || (arr[Ninja.position_x][Ninja.position_y]==0));
 
     return arr;
 }

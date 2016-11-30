@@ -14,21 +14,24 @@
     width:60px;
     height:60px;
     background-size: 100%;
+    background-color: #f8f8f8;
 }
 .empty{
+    opacity: 0.1;
+}
+.add-active{
+    opacity: 0.5;
+}
+.add:hover{
+    opacity: 0.5;
+}
+.add{
     background-image: url(assets/add.svg);
-    opacity: 0.2;
     cursor: pointer;
-}
-.empty-active{
-    opacity: 0.5;
-}
-.empty:hover{
-    opacity: 0.5;
 }
 .visited{
     background-color: orange;
-    background-image: none;
+    opacity: 0.1;
     outline: 1px solid orange;
 }
 .wall{
@@ -37,17 +40,15 @@
 .char{
     position: absolute;
     transition: all 0.3s linear, transform 0.1s linear;
+    background-color: transparent;
 }
 #ninja{
     background-image: url(assets/ninja.svg);
-    top: calc(600px - 60px);
-    left: calc(300px - 60px);
+    cursor: pointer;
 }
 .guard{
     background-image: url(assets/guard.svg);
 }
 #coin{
     background-image: url(assets/coin.svg);
-    top: calc(2 * 60px);
-    left: calc(4 * 60px);
 }
