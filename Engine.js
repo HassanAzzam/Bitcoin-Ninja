@@ -13,8 +13,8 @@ function AStar(){
   		if(a.cost+a.heu>b.cost+b.heu||(a.cost+a.heu==b.cost+b.heu&&a.cost>b.cost)) return 1;
   		return -1;
   	}});
-    visited[Ninja.position_x][Ninja.position_y]=1;
-    open_list.queue({ Top:Ninja.position_x, Left:Ninja.position_y, cost:0, heu:Heuristic(Ninja), parent:null });
+    visited[Ninja.Top][Ninja.Left]=1;
+    open_list.queue({ Top:Ninja.Top, Left:Ninja.Left, cost:0, heu:Heuristic(Ninja), parent:null });
     while (open_list.length){
         var current = open_list.dequeue();
         UI.GetCell(current.Top,current.Left).classList.add("visited");
@@ -55,7 +55,7 @@ function ConstructPath(node){
 }
 
 function Heuristic(node){
-    return Math.abs(Coin.position_x-node.Top)+Math.abs(Coin.position_y-node.Left);
+    return Math.abs(Coin.Top-node.Top)+Math.abs(Coin.Left-node.Left);
 }
 function isValid(node){
     if(node.Top<0||node.Top>=SizeX||node.Left<0||node.Left>=SizeY) return 0;

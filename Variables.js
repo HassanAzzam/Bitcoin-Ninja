@@ -27,8 +27,8 @@ var UI={
         for (var i = 0; i < Guards.length; i++) {
             var length = Guards[i].length;
             if (Math.floor(cnt / length) % 2)
-                UI.Move(Guards[i][length - cnt % length - 1], document.getElementsByClassName('guard')[i]);
-            else UI.Move(Guards[i][cnt % length], document.getElementsByClassName('guard')[i]);
+                UI.Move(Guards[i][length - 1 - cnt%length], document.getElementsByClassName('guard')[i]);
+            else UI.Move(Guards[i][cnt%length], document.getElementsByClassName('guard')[i]);
         }
         setTimeout(UI.SimulateGuardMove.bind(null,cnt+1),300);
     },

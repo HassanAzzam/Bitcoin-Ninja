@@ -42,15 +42,9 @@ function CreateMap(){
     }
     game.innerHTML += ('<div id="coin" class="cell char"></div>');
     game.innerHTML += ('<div id="ninja" class="cell char" style="transform:rotate(0deg)" onclick="StartGame()"></div>');
-    //game.innerHTML += ('<div class="cell char guard"></div>');
-            document.getElementById("coin").style.top=""+Coin.position_x*60+"px";
-            document.getElementById("coin").style.left=""+Coin.position_y*60+"px";
-
-            document.getElementById("ninja").style.top=""+Ninja.position_x*60+"px";
-            document.getElementById("ninja").style.left=""+Ninja.position_y*60+"px";
+    UI.SetCellPosition(document.getElementById("coin"),Coin);
+    UI.SetCellPosition(document.getElementById("ninja"),Ninja);
 }
-Map = GenerateMap();
-CreateMap();
 
 function StartGame(){
     var add = document.getElementsByClassName('add');
@@ -64,3 +58,6 @@ function StartGame(){
     UI.SimulateNinjaMove(0);
     UI.SimulateGuardMove(0);
 }
+
+Map = GenerateMap();
+CreateMap();
