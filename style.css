@@ -26,11 +26,17 @@
 .empty:hover{
     opacity: 0.5;
 }
+.visited{
+    background-color: orange;
+    background-image: none;
+    outline: 1px solid orange;
+}
 .wall{
     background-image: url(assets/wall.svg);
 }
 .char{
     position: absolute;
+    transition: all 0.3s linear, transform 0.1s linear;
 }
 #ninja{
     background-image: url(assets/ninja.svg);

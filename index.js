@@ -12,19 +12,17 @@ function Extend(cell,add){
     ClearQueue();
     cell.style.backgroundColor= "rgba(255,0,0,0.025)";
     cell.style.outline="1px solid rgba(255,0,0,0.2)";
-    var i=parseInt(cell.id[0],10);
-    var j=parseInt(cell.id[1],10);
     if(add){
         game.innerHTML += ('<div class="cell char guard"></div>');
-        game.lastChild.style.top=(i*60)+"px";
-        game.lastChild.style.left=(j*60)+"px";
+        game.lastChild.style.top=(Cell_Position(cell).i*60)+"px";
+        game.lastChild.style.left=(Cell_Position(cell).j*60)+"px";
     }
     cell.setAttribute('onclick',"");
     var adj=[
-        document.getElementById(""+(i-1)+j),
-        document.getElementById(""+(i+1)+j),
-        document.getElementById(""+i+(j-1)),
-        document.getElementById(""+i+(j+1)),
+        document.getElementById(""+((Cell_Position(cell).i)-1)+"-"+Cell_Position(cell).j),
+        document.getElementById(""+((Cell_Position(cell).i)+1)+"-"+Cell_Position(cell).j),
+        document.getElementById(""+Cell_Position(cell).i+"-"+((Cell_Position(cell).j)-1)),
+        document.getElementById(""+Cell_Position(cell).i+"-"+((Cell_Position(cell).j)+1)),
     ];
     adj.forEach(function(item){
         if(item==null||!item.classList.contains('empty')) return;
@@ -33,18 +31,22 @@ function Extend(cell,add){
         GuardMove.push(item);
     });
 }
+
+function Cell_Position(cell){
+    var id_str = cell.id;
+    var splitted_id = id_str.split('-');
+    var i=parseInt(splitted_id[0],10);
+    var j=parseInt(splitted_id[1],10);
+    return {i:i,j:j};
+}
 function AddRange(cell){
     Extend(cell,0);
-    var i=parseInt(cell.id[0],10);
-    var j=parseInt(cell.id[1],10);
-    guards[guards.length-1].push({i,j});
+    guards[guards.length-1].push(Cell_Position(cell));
     cell.style.backgroundImage= null;
 }
 function AddGuard(cell){
     Extend(cell,1);
-    var i=parseInt(cell.id[0],10);
-    var j=parseInt(cell.id[1],10);
-    guards.push([{i,j}]);
+    guards.push([Cell_Position(cell)]);
     console.log(guards[guards.length-1]);
 }
 function CreateMap(){
@@ -52,7 +54,8 @@ function CreateMap(){
     for(var i=0;i<map.length;i++){
         for(var j=0;j<map[i].length;j++){
             game.innerHTML += ('<div id="'+i+'-'+j+'" class="cell '+((map[i][j])? 'empty':'wall')+'"></div>');
-
+            if((i== coin.position_x && j==coin.position_y) || (i== ninja.position_x && j==ninja.position_y))
+                game.lastChild.classList.remove("empty");
             if(map[i][j])
             game.lastChild.setAttribute('onclick',"AddGuard(this)");
         }
@@ -69,3 +72,4 @@ function CreateMap(){
 var map = GenerateMap();
 var guards=[];
 CreateMap();
+StartGame();
