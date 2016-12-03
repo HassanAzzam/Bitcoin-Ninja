@@ -1,69 +1,76 @@
-var GuardMove=[];
 function ClearQueue(){
-    for(var k = GuardMove.length - 1; k >= 0; k--) {
-        GuardMove[k].classList.remove('empty-active');
-        GuardMove[k].setAttribute('onclick',"AddGuard(this)");
-        GuardMove.splice(k, 1);
+    for(var k = CurrentGuardMoves.length - 1; k >= 0; k--) {
+        CurrentGuardMoves[k].classList.remove('add-active');
+        CurrentGuardMoves[k].setAttribute('onclick',"AddGuard(this)");
+        CurrentGuardMoves.splice(k, 1);
     }
 }
 function Extend(cell,add){
-    cell.classList.remove('empty');
+    cell.classList.remove('add');
     ClearQueue();
-    cell.style.backgroundColor= "rgba(255,0,0,0.025)";
-    cell.style.outline="1px solid rgba(255,0,0,0.2)";
-    var i=parseInt(cell.id[0],10);
-    var j=parseInt(cell.id[1],10);
-    if(add){
-        game.innerHTML += ('<div class="cell char guard"></div>');
-        game.lastChild.style.top=(i*60)+"px";
-        game.lastChild.style.left=(j*60)+"px";
-    }
+    cell.style.backgroundColor= "red";
+    cell.style.outline="1px solid red";
     cell.setAttribute('onclick',"");
-    var adj=[
-        document.getElementById(""+(i-1)+j),
-        document.getElementById(""+(i+1)+j),
-        document.getElementById(""+i+(j-1)),
-        document.getElementById(""+i+(j+1)),
-    ];
-    adj.forEach(function(item){
-        if(item==null||!item.classList.contains('empty')) return;
-        item.classList.add('empty-active');
-        item.setAttribute('onclick',"AddRange(this)");
-        GuardMove.push(item);
-    });
+    if(add){
+        game.innerHTML += ('<div class="cell char guard" style="transform:rotate(0deg)"></div>');
+        UI.SetCellPosition(game.lastChild,UI.GetCellPosition(cell));
+    }
+    UI.HighlightAdjcent(cell);
 }
+
+
 function AddRange(cell){
     Extend(cell,0);
-    var i=parseInt(cell.id[0],10);
-    var j=parseInt(cell.id[1],10);
-    guards[guards.length-1].push({i,j});
+    Guards[Guards.length-1].push(UI.GetCellPosition(cell));
     cell.style.backgroundImage= null;
 }
 function AddGuard(cell){
     Extend(cell,1);
-    var i=parseInt(cell.id[0],10);
-    var j=parseInt(cell.id[1],10);
-    guards.push([{i,j}]);
-    console.log(guards[guards.length-1]);
+    Guards.push([UI.GetCellPosition(cell)]);
 }
 function CreateMap(){
     var game=document.getElementById('game');
-    for(var i=0;i<map.length;i++){
-        for(var j=0;j<map[i].length;j++){
-            game.innerHTML += ('<div id="'+i+''+j+'" class="cell '+((map[i][j])? 'empty':'wall')+'"></div>');
-            if((i==9&&j==4)||(i==2&&j==4)) {
-                game.lastChild.classList.toggle('empty');
-                continue;
-            }
-            if(map[i][j])
+    for(var i=0;i<Map.length;i++){
+        for(var j=0;j<Map[i].length;j++){
+            game.innerHTML += ('<div id="'+i+'-'+j+'" class="cell '+((Map[i][j])? 'empty add':'wall')+'"></div>');
+            if((i== Coin.position_x && j==Coin.position_y) || (i== Ninja.position_x && j==Ninja.position_y))
+                game.lastChild.classList.remove("empty"), game.lastChild.classList.remove("add");
+            if(Map[i][j])
             game.lastChild.setAttribute('onclick',"AddGuard(this)");
         }
     }
-    game.innerHTML += ('<div id="ninja" class="cell char"></div>');
     game.innerHTML += ('<div id="coin" class="cell char"></div>');
-    //game.innerHTML += ('<div class="cell char guard"></div>');
+    game.innerHTML += ('<div id="ninja" class="cell char" style="transform:rotate(0deg)" onclick="StartGame()"></div>');
+    UI.SetCellPosition(document.getElementById("coin"),Coin);
+    UI.SetCellPosition(document.getElementById("ninja"),Ninja);
 }
-var map = GenerateMap();
-var guards=[];
-map[9][4]=map[2][4]=1;
+
+function AreEqual(a,b){
+    return a.Left==b.Left&&a.Top==b.Top;
+}
+
+function StartGame(){
+    var add = document.getElementsByClassName('add');
+    for(var i=0; i<add.length;) {
+        add[i].setAttribute('onclick','');
+        add[i].classList.remove('add');
+    }
+    Path = AStar();
+    console.log(Path);
+    UI.SimulateNinjaMove(0);
+    if(document.getElementById('ninja').getAttribute('onclick')=="") return;
+    //UI.SimulateGuardMove(0);
+    document.getElementById('ninja').setAttribute('onclick',"");
+    setTimeout(function(){
+        if(!AreEqual(Path[Path.length-1],Coin)) return;
+	UI.lastGuardPos=Path.length;
+        Path=new Array();
+        document.getElementById("coin").remove();
+        var tmp = Ninja.Top; Ninja.Top = Coin.Top; Coin.Top = tmp;
+        tmp = Ninja.Left; Ninja.Left = Coin.Left; Coin.Left = tmp;
+        StartGame();
+    },(Path.length)*300);
+}
+
+Map = GenerateMap();
 CreateMap();

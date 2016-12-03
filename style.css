@@ -1,42 +1,55 @@
 #game{
-    width:600px;
+    width:1200px;
     height:600px;
     border: 5px solid #eee;
     position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+
 }
 .cell{
     float:left;
     width:60px;
     height:60px;
     background-size: 100%;
+    background-color: #f8f8f8;
 }
 .empty{
+    opacity: 0.1;
+    outline: 1px solid #888;
+}
+.add-active{
+    opacity: 0.5;
+}
+.add:hover{
+    opacity: 0.5;
+}
+.add{
     background-image: url(assets/add.svg);
-    opacity: 0.2;
     cursor: pointer;
 }
-.empty-active{
-    opacity: 0.5;
-}
-.empty:hover{
-    opacity: 0.5;
+.visited{
+    background-color: orange;
+    opacity: 0.1;
+    outline: 1px solid orange;
 }
 .wall{
     background-image: url(assets/wall.svg);
 }
 .char{
     position: absolute;
+    transition: all 0.3s linear, transform 0.1s linear;
+    background-color: transparent;
 }
 #ninja{
     background-image: url(assets/ninja.svg);
-    top: calc(600px - 60px);
-    left: calc(300px - 60px);
+    cursor: pointer;
 }
 .guard{
     background-image: url(assets/guard.svg);
 }
 #coin{
     background-image: url(assets/coin.svg);
-    top: calc(2 * 60px);
-    left: calc(4 * 60px);
 }
