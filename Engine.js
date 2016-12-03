@@ -7,8 +7,8 @@ function CreateVisited(){
     }
     return arr;
 }
-var visited = CreateVisited();
 function AStar(){
+    var visited = CreateVisited();
     var open_list = new PriorityQueue({ comparator: function(a, b) {
   		if(a.cost+a.heu>b.cost+b.heu||(a.cost+a.heu==b.cost+b.heu&&a.cost>b.cost)) return 1;
   		return -1;
@@ -30,15 +30,15 @@ function AStar(){
         //if(isValid(wait)) open_list.queue(wait);
         for(var k=1;k<=10;k++){
             up.cost=down.cost=left.cost=right.cost=current.cost+k;
-            if(isValid(up)&&!visited[up.Top][up.Left]) open_list.queue(JSON.parse(JSON.stringify(up)));
-            if(isValid(down)&&!visited[down.Top][down.Left]) open_list.queue(JSON.parse(JSON.stringify(down)));
-            if(isValid(left)&&!visited[left.Top][left.Left]) open_list.queue(JSON.parse(JSON.stringify(left)));
-            if(isValid(right)&&!visited[right.Top][right.Left]) open_list.queue(JSON.parse(JSON.stringify(right)));
+            if(isValid(up,up.cost)&&!visited[up.Top][up.Left]) open_list.queue(JSON.parse(JSON.stringify(up)));
+            if(isValid(down,down.cost)&&!visited[down.Top][down.Left]) open_list.queue(JSON.parse(JSON.stringify(down)));
+            if(isValid(left,left.cost)&&!visited[left.Top][left.Left]) open_list.queue(JSON.parse(JSON.stringify(left)));
+            if(isValid(right,right.cost)&&!visited[right.Top][right.Left]) open_list.queue(JSON.parse(JSON.stringify(right)));
         }
-        if(isValid(up)) visited[up.Top][up.Left]=1;
-        if(isValid(down)) visited[down.Top][down.Left]=1;
-        if(isValid(left)) visited[left.Top][left.Left]=1;
-        if(isValid(right)) visited[right.Top][right.Left]=1;
+        if(isValid(up,up.cost)) visited[up.Top][up.Left]=1;
+        if(isValid(down,down.cost)) visited[down.Top][down.Left]=1;
+        if(isValid(left,left.cost)) visited[left.Top][left.Left]=1;
+        if(isValid(right,right.cost)) visited[right.Top][right.Left]=1;
     }
   return false; // no path exists
 }
@@ -46,18 +46,36 @@ function AStar(){
 function ConstructPath(node){
     var path=[];
     do{
-        while(node.cost>node.parent.cost) path.push(node),node.cost--;
+        while(node.cost>node.parent.cost) path.push(JSON.parse(JSON.stringify(node))),node.cost--;
         node = node.parent;
     }
     while(node.parent!=null);
-    while(node.cost>-1) path.push(node),node.cost--;
+    while(node.cost>-1)path.push(JSON.parse(JSON.stringify(node))),node.cost--;
     return path.reverse();
 }
 
 function Heuristic(node){
     return Math.abs(Coin.Top-node.Top)+Math.abs(Coin.Left-node.Left);
 }
-function isValid(node){
+function isValid(node,cost){
+    cost--;
+	cost=Math.max(0,cost);
     if(node.Top<0||node.Top>=SizeX||node.Left<0||node.Left>=SizeY) return 0;
+    for(var j=cost-2; j<=cost+2;j++){ //Ignore 2steps before and 2steps after
+        for (var i = 0; i < Guards.length; i++) {
+            var length = Guards[i].length;
+            var position;
+            if (Math.floor(cost / length) % 2){
+                position = Guards[i][length - 1 - cost%length];
+                if(AreEqual(position,node)) 
+return false;
+            }
+            else {
+                position = Guards[i][cost%length];
+                if(AreEqual(position,node)) 
+return false;
+            }
+        }
+    }
     return Map[node.Top][node.Left];
 }

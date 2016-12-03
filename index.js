@@ -27,7 +27,6 @@ function AddRange(cell){
 function AddGuard(cell){
     Extend(cell,1);
     Guards.push([UI.GetCellPosition(cell)]);
-    console.log(Guards[Guards.length-1]);
 }
 function CreateMap(){
     var game=document.getElementById('game');
@@ -46,17 +45,31 @@ function CreateMap(){
     UI.SetCellPosition(document.getElementById("ninja"),Ninja);
 }
 
+function AreEqual(a,b){
+    return a.Left==b.Left&&a.Top==b.Top;
+}
+
 function StartGame(){
     var add = document.getElementsByClassName('add');
     for(var i=0; i<add.length;) {
         add[i].setAttribute('onclick','');
         add[i].classList.remove('add');
     }
-    document.getElementById('ninja').setAttribute('onclick',"");
     Path = AStar();
     console.log(Path);
     UI.SimulateNinjaMove(0);
-    UI.SimulateGuardMove(0);
+    if(document.getElementById('ninja').getAttribute('onclick')=="") return;
+    //UI.SimulateGuardMove(0);
+    document.getElementById('ninja').setAttribute('onclick',"");
+    setTimeout(function(){
+        if(!AreEqual(Path[Path.length-1],Coin)) return;
+	UI.lastGuardPos=Path.length;
+        Path=new Array();
+        document.getElementById("coin").remove();
+        var tmp = Ninja.Top; Ninja.Top = Coin.Top; Coin.Top = tmp;
+        tmp = Ninja.Left; Ninja.Left = Coin.Left; Coin.Left = tmp;
+        StartGame();
+    },(Path.length)*300);
 }
 
 Map = GenerateMap();

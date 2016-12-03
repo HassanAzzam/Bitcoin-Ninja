@@ -6,6 +6,8 @@ var Map;
 var Guards=[];
 var CurrentGuardMoves=[];
 var UI={
+	lastGuardPos: 0,
+
     Move: function(cell, char) {
         UI.Rotate(char, cell);
         UI.SetCellPosition(char,cell);
@@ -15,22 +17,19 @@ var UI={
         if(i<Path.length){
             UI.Move(Path[i], document.getElementById('ninja'));
         }
-        else if(i<2*Path.length-1){
-            try{document.getElementById("coin").remove();}catch(x){};
-            UI.Move(Path[Path.length - 2 - i%Path.length], document.getElementById('ninja'));
-        }
         else return;
+	UI.SimulateGuardMove(i);
         setTimeout(UI.SimulateNinjaMove.bind(null,i+1),300);
     },
 
     SimulateGuardMove: function(cnt) {
+	cnt+=UI.lastGuardPos;
         for (var i = 0; i < Guards.length; i++) {
             var length = Guards[i].length;
-            if (Math.floor(cnt / length) % 2)
+            if (Math.floor(cnt / length) % 2 )
                 UI.Move(Guards[i][length - 1 - cnt%length], document.getElementsByClassName('guard')[i]);
             else UI.Move(Guards[i][cnt%length], document.getElementsByClassName('guard')[i]);
         }
-        setTimeout(UI.SimulateGuardMove.bind(null,cnt+1),300);
     },
 
     Rotate: function(char,cell) {
