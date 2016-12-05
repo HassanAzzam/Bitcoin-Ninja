@@ -1,3 +1,12 @@
+function GetMoveIndex(cnt, length){
+    if(length==1) return 0;
+    var double = 2*(length-1);
+    cnt -= Math.floor(cnt/double)*double;
+    if (cnt<length)
+        return cnt;
+    else return double-cnt;
+}
+// 0 1 2
 function ClearQueue(){
     for(var k = CurrentGuardMoves.length - 1; k >= 0; k--) {
         CurrentGuardMoves[k].classList.remove('add-active');

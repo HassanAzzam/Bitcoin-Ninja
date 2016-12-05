@@ -30,10 +30,10 @@ function AStar(){
         //if(isValid(wait)) open_list.queue(wait);
         for(var k=1;k<=10;k++){
             up.cost=down.cost=left.cost=right.cost=current.cost+k;
-            if(isValid(up,up.cost)&&!visited[up.Top][up.Left]) open_list.queue(JSON.parse(JSON.stringify(up)));
-            if(isValid(down,down.cost)&&!visited[down.Top][down.Left]) open_list.queue(JSON.parse(JSON.stringify(down)));
-            if(isValid(left,left.cost)&&!visited[left.Top][left.Left]) open_list.queue(JSON.parse(JSON.stringify(left)));
-            if(isValid(right,right.cost)&&!visited[right.Top][right.Left]) open_list.queue(JSON.parse(JSON.stringify(right)));
+            if(isValid(up,up.cost-1)&&!visited[up.Top][up.Left]) open_list.queue(JSON.parse(JSON.stringify(up)));
+            if(isValid(down,down.cost-1)&&!visited[down.Top][down.Left]) open_list.queue(JSON.parse(JSON.stringify(down)));
+            if(isValid(left,left.cost-1)&&!visited[left.Top][left.Left]) open_list.queue(JSON.parse(JSON.stringify(left)));
+            if(isValid(right,right.cost-1)&&!visited[right.Top][right.Left]) open_list.queue(JSON.parse(JSON.stringify(right)));
         }
         if(isValid(up,up.cost)) visited[up.Top][up.Left]=1;
         if(isValid(down,down.cost)) visited[down.Top][down.Left]=1;
@@ -58,24 +58,14 @@ function Heuristic(node){
     return Math.abs(Coin.Top-node.Top)+Math.abs(Coin.Left-node.Left);
 }
 function isValid(node,cost){
-    cost--;
+    //cost++;
 	cost=Math.max(0,cost);
     if(node.Top<0||node.Top>=SizeX||node.Left<0||node.Left>=SizeY) return 0;
-    for(var j=cost-2; j<=cost+2;j++){ //Ignore 2steps before and 2steps after
-        for (var i = 0; i < Guards.length; i++) {
-            var length = Guards[i].length;
-            var position;
-            if (Math.floor(cost / length) % 2){
-                position = Guards[i][length - 1 - cost%length];
-                if(AreEqual(position,node)) 
-return false;
-            }
-            else {
-                position = Guards[i][cost%length];
-                if(AreEqual(position,node)) 
-return false;
-            }
-        }
+    var sol=true;
+    for (var i = 0; i < Guards.length; i++) {
+        var length = Guards[i].length;
+        var index = GetMoveIndex(cost,length);
+        sol&=!AreEqual(Guards[i][index],node);
     }
-    return Map[node.Top][node.Left];
+    return sol&&Map[node.Top][node.Left];
 }
