@@ -1,0 +1,20 @@
+****Engine file****
+
+CreateVisited(); // O(N^2)
+AStar(); //O(N)
+ConstructPath(node);   //O(N)
+Heuristic(node);   //O(1)
+isValid(node,cost);  //O(N^2)
+
+****GenerateMap****
+GenerateMap();   //O(N^2)
+
+****Variables****
+Move       --> O(1)
+SimulateNinjaMove --> O(1)
+SimulateGuardMove   --> O(N)
+Rotate     --> O(1)
+GetCell      --> O(1)
+GetCellPosition   --> O(1)
+SetCellPosition   --> O(1)
+HighlightAdjcent   --> O(1)
