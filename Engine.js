@@ -31,7 +31,7 @@ function AStar(test){
         //if(isValid(wait)) open_list.queue(wait);
         var uf=0, df=0, lf=0, rf=0;
         for(var k=1;k<=10;k++){
-            if(!isValid(current,current.cost+k-1)) continue;
+            if(!isValid(current,current.cost+k-1)) break;
             up.cost=down.cost=left.cost=right.cost=current.cost+k;
             if(isValid(up,up.cost)&&!visited[up.Top][up.Left]) uf=1,open_list.queue(JSON.parse(JSON.stringify(up)));
             if(isValid(down,down.cost)&&!visited[down.Top][down.Left]) df=1,open_list.queue(JSON.parse(JSON.stringify(down)));
