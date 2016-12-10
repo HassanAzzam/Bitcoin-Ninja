@@ -18,17 +18,18 @@ var UI={
             UI.Move(Path[i], document.getElementById('ninja'));
         }
         else return;
-	UI.SimulateGuardMove(i);
+		UI.SimulateGuardMove(i);
         setTimeout(UI.SimulateNinjaMove.bind(null,i+1),300);
     },
 
     SimulateGuardMove: function(cnt) {
-	cnt+=UI.lastGuardPos;
+		cnt--;
+		cnt+=UI.lastGuardPos;
+		if(cnt<0) return;
         for (var i = 0; i < Guards.length; i++) {
             var length = Guards[i].length;
-            if (Math.floor(cnt / length) % 2 )
-                UI.Move(Guards[i][length - 1 - cnt%length], document.getElementsByClassName('guard')[i]);
-            else UI.Move(Guards[i][cnt%length], document.getElementsByClassName('guard')[i]);
+			var index = GetMoveIndex(cnt,length);
+            UI.Move(Guards[i][index], document.getElementsByClassName('guard')[i]);
         }
     },
 

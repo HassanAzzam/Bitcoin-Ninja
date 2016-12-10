@@ -25,6 +25,9 @@ var arr = new Array(SizeX);
                 Ninja.Top = Math.floor(Math.random()*SizeX);
                 Ninja.Left = Math.floor(Math.random()*SizeY);
             }while((Ninja.Top < 5 || Ninja.Left < 15) || (arr[Ninja.Top][Ninja.Left]==0));
-
+    Map = arr;
+    var test = AStar(1);
+    if(!test)
+    return GenerateMap();
     return arr;
 }
