@@ -23,7 +23,9 @@ var UI={
     },
 
     SimulateGuardMove: function(cnt) {
-	cnt+=UI.lastGuardPos;
+		cnt--;
+		cnt+=UI.lastGuardPos;
+		if(cnt<0) return;
         for (var i = 0; i < Guards.length; i++) {
             var length = Guards[i].length;
 			var index = GetMoveIndex(cnt,length);
