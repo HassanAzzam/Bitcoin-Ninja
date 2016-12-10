@@ -53,3 +53,6 @@
 #coin{
     background-image: url(assets/coin.svg);
 }
+.danger, .ninja-here{
+    opacity: 0.22;
+}

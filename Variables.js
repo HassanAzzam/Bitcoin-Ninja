@@ -16,6 +16,8 @@ var UI={
     SimulateNinjaMove: function(i) {
         if(i<Path.length){
             UI.Move(Path[i], document.getElementById('ninja'));
+			if(i) UI.GetCell(Path[i-1].Top, Path[i-1].Left).classList.remove('ninja-here');
+			UI.GetCell(Path[i].Top, Path[i].Left).classList.add('ninja-here');
         }
         else return;
 		UI.SimulateGuardMove(i);
@@ -27,9 +29,20 @@ var UI={
 		cnt+=UI.lastGuardPos;
 		if(cnt<0) return;
         for (var i = 0; i < Guards.length; i++) {
-            var length = Guards[i].length;
-			var index = GetMoveIndex(cnt,length);
+			var index;
+			var length = Guards[i].length;
+			if(cnt>1) {
+				index = GetMoveIndex(cnt-2,length);
+				UI.GetCell(Guards[i][index].Top,Guards[i][index].Left).classList.remove('danger');
+			}
+
+			index = GetMoveIndex(cnt,length);
             UI.Move(Guards[i][index], document.getElementsByClassName('guard')[i]);
+
+			UI.GetCell(Guards[i][index].Top,Guards[i][index].Left).classList.add('danger');
+			if(index>0) UI.GetCell(Guards[i][index-1].Top,Guards[i][index-1].Left).classList.add('danger');
+	        if(index<Guards[i].length-1) UI.GetCell(Guards[i][index+1].Top,Guards[i][index+1].Left).classList.add('danger');
+
         }
     },
 
