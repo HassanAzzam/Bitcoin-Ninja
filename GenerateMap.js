@@ -7,7 +7,7 @@ var arr = new Array(SizeX);
             arr[i][j]=1;
     }
         var obstacle=0;
-            while(obstacle!=60){
+            while(obstacle!=65){
                 var random_obstacle_Top = Math.floor(Math.random()*SizeX);
                 var random_obstacle_Left = Math.floor(Math.random()*SizeY);
                 if(arr[random_obstacle_Top][random_obstacle_Left]!=0){
