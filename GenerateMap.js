@@ -7,7 +7,7 @@ var arr = new Array(SizeX);
             arr[i][j]=1;
     }
         var obstacle=0;
-            while(obstacle!=50){
+            while(obstacle!=60){
                 var random_obstacle_Top = Math.floor(Math.random()*SizeX);
                 var random_obstacle_Left = Math.floor(Math.random()*SizeY);
                 if(arr[random_obstacle_Top][random_obstacle_Left]!=0){
@@ -18,13 +18,13 @@ var arr = new Array(SizeX);
             do{
                 Coin.Top = Math.floor(Math.random()*SizeX);
                 Coin.Left = Math.floor(Math.random()*SizeY);
-            }while((Coin.Top > 5 || Coin.Left > 5)
+            }while((Coin.Top > (SizeX/2) || Coin.Left > (SizeX/2))
                 || (arr[Coin.Top][Coin.Left]==0));
 
             do{
                 Ninja.Top = Math.floor(Math.random()*SizeX);
                 Ninja.Left = Math.floor(Math.random()*SizeY);
-            }while((Ninja.Top < 5 || Ninja.Left < 15) || (arr[Ninja.Top][Ninja.Left]==0));
+            }while((Ninja.Top < (SizeX/2) || Ninja.Left < (3*SizeY/4)) || (arr[Ninja.Top][Ninja.Left]==0));
     Map = arr;
     var test = AStar(1);
     if(!test)
