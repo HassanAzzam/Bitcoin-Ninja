@@ -1,4 +1,5 @@
-var SizeX=10, SizeY=20;
+var SizeX=12, SizeY=24;
+var CellSize=50;
 var Path;
 var Coin={};
 var Ninja={};
@@ -17,7 +18,10 @@ var UI={
         if(i<Path.length){
             UI.Move(Path[i], document.getElementById('ninja'));
 			if(i) UI.GetCell(Path[i-1].Top, Path[i-1].Left).classList.remove('ninja-here');
-			UI.GetCell(Path[i].Top, Path[i].Left).classList.add('ninja-here');
+			//UI.GetCell(Path[i].Top, Path[i].Left).classList.add('ninja-here');
+			var here = UI.GetCell(Path[i].Top, Path[i].Left);
+			here.style.opacity="0.2";
+			if(here.style.backgroundColor=="red") here.style.backgroundColor="rgb(236, 65, 0)"
         }
         else return;
 		UI.SimulateGuardMove(i);
@@ -52,24 +56,24 @@ var UI={
         rot = parseInt(char.style.transform.split('(')[1].split('d')[0],10);
         tmp=rot+360;
         if(tmp%360==0){
-            if (cur.Left > cell.Left * 60) char.style.transform = "rotate("+(rot-90)+"deg)";
-            else if (cur.Left < cell.Left * 60) char.style.transform = "rotate("+(rot+90)+"deg)";
-            else if(cur.Top < cell.Top * 60) char.style.transform = "rotate("+(rot+180)+"deg)";
+            if (cur.Left > cell.Left * CellSize) char.style.transform = "rotate("+(rot-90)+"deg)";
+            else if (cur.Left < cell.Left * CellSize) char.style.transform = "rotate("+(rot+90)+"deg)";
+            else if(cur.Top < cell.Top * CellSize) char.style.transform = "rotate("+(rot+180)+"deg)";
         }
         else if(tmp%360==270){
-            if (cur.Top < cell.Top * 60) char.style.transform = "rotate("+(rot-90)+"deg)";
-            else if (cur.Top > cell.Top * 60) char.style.transform = "rotate("+(rot+90)+"deg)";
-            else if(cur.Left < cell.Left * 60) char.style.transform = "rotate("+(rot+180)+"deg)";
+            if (cur.Top < cell.Top * CellSize) char.style.transform = "rotate("+(rot-90)+"deg)";
+            else if (cur.Top > cell.Top * CellSize) char.style.transform = "rotate("+(rot+90)+"deg)";
+            else if(cur.Left < cell.Left * CellSize) char.style.transform = "rotate("+(rot+180)+"deg)";
         }
         else if(tmp%360==180){
-            if (cur.Left < cell.Left * 60) char.style.transform = "rotate("+(rot-90)+"deg)";
-            else if (cur.Left > cell.Left * 60) char.style.transform = "rotate("+(rot+90)+"deg)";
-            else if(cur.Top > cell.Top * 60) char.style.transform = "rotate("+(rot+180)+"deg)";
+            if (cur.Left < cell.Left * CellSize) char.style.transform = "rotate("+(rot-90)+"deg)";
+            else if (cur.Left > cell.Left * CellSize) char.style.transform = "rotate("+(rot+90)+"deg)";
+            else if(cur.Top > cell.Top * CellSize) char.style.transform = "rotate("+(rot+180)+"deg)";
         }
         else{
-            if (cur.Top > cell.Top * 60) char.style.transform = "rotate("+(rot-90)+"deg)";
-            else if (cur.Top < cell.Top * 60) char.style.transform = "rotate("+(rot+90)+"deg)";
-            else if(cur.Left > cell.Left * 60) char.style.transform = "rotate("+(rot+180)+"deg)";
+            if (cur.Top > cell.Top * CellSize) char.style.transform = "rotate("+(rot-90)+"deg)";
+            else if (cur.Top < cell.Top * CellSize) char.style.transform = "rotate("+(rot+90)+"deg)";
+            else if(cur.Left > cell.Left * CellSize) char.style.transform = "rotate("+(rot+180)+"deg)";
         }
     },
 
@@ -86,8 +90,8 @@ var UI={
     },
 
     SetCellPosition: function(cell,position){
-        cell.style.top=""+(position.Top*60)+"px";
-        cell.style.left=""+(position.Left*60)+"px";
+        cell.style.top=""+(position.Top*CellSize)+"px";
+        cell.style.left=""+(position.Left*CellSize)+"px";
     },
 
     HighlightAdjcent: function(cell){

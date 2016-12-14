@@ -1,10 +1,9 @@
+
 function GetMoveIndex(cnt, length){
-    if(length==1) return 0;
-    var double = 2*(length-1);
-    cnt -= Math.floor(cnt/double)*double;
-    if (cnt<length)
-        return cnt;
-    else return double-cnt;
+    var div = Math.floor(cnt/length);
+    var rem = cnt%length;
+    if(div%2) return length - 1 - rem;
+    return rem;
 }
 function ClearQueue(){
     for(var k = CurrentGuardMoves.length - 1; k >= 0; k--) {
