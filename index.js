@@ -64,13 +64,13 @@ function StartGame(){
     }
     Path = AStar();
     console.log(Path);
-        //Path.splice(0,1);
-    if(document.getElementById('ninja').getAttribute('onclick')=="") {
-        //Path.splice(0,1);
-        UI.SimulateNinjaMove(0);
+    if(Path==false){
+        document.getElementsByTagName('section')[1].style.display='block';
+        document.getElementById('ninja').setAttribute('onclick',"");
         return;
     }
     UI.SimulateNinjaMove(0);
+    if(document.getElementById('ninja').getAttribute('onclick')=="") return;
     document.getElementById('ninja').setAttribute('onclick',"");
     setTimeout(function(){
         if(!AreEqual(Path[Path.length-1],Coin)) return;
@@ -79,6 +79,7 @@ function StartGame(){
         document.getElementById("coin").remove();
         var tmp = Ninja.Top; Ninja.Top = Coin.Top; Coin.Top = tmp;
         tmp = Ninja.Left; Ninja.Left = Coin.Left; Coin.Left = tmp;
+        UI.CellHighlight="0.3";
         StartGame();
     },(Path.length+0.5)*300);
 }

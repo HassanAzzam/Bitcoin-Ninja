@@ -8,6 +8,7 @@ var Guards=[];
 var CurrentGuardMoves=[];
 var UI={
 	lastGuardPos: 0,
+	CellHighlight: "0.2",
 
     Move: function(cell, char) {
         UI.Rotate(char, cell);
@@ -20,7 +21,7 @@ var UI={
 			if(i) UI.GetCell(Path[i-1].Top, Path[i-1].Left).classList.remove('ninja-here');
 			//UI.GetCell(Path[i].Top, Path[i].Left).classList.add('ninja-here');
 			var here = UI.GetCell(Path[i].Top, Path[i].Left);
-			here.style.opacity="0.2";
+			here.style.opacity=UI.CellHighlight;
 			if(here.style.backgroundColor=="red") here.style.backgroundColor="rgb(236, 65, 0)"
         }
         else return;
