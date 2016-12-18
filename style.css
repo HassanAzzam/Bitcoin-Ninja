@@ -72,7 +72,7 @@ span{
 #info:hover{
     color:#888;
 }
-#ins{
+#ins, #nopath{
     width: auto;
     height: auto;
     top: 50vh;
