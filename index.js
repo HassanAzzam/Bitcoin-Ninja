@@ -19,7 +19,7 @@ function Extend(cell,add){
     cell.style.outline="1px solid red";
     cell.setAttribute('onclick',"");
     if(add){
-        game.innerHTML += ('<div class="cell char guard" style="transform:rotate(0deg)"></div>');
+        game.innerHTML += ('<div class="cell char guard" style="transform:rotate(0deg);width:'+CellSize+'px;height:'+CellSize+'px"></div>');
         UI.SetCellPosition(game.lastChild,UI.GetCellPosition(cell));
     }
     UI.HighlightAdjcent(cell);
@@ -35,54 +35,41 @@ function AddGuard(cell){
     Extend(cell,1);
     Guards.push([UI.GetCellPosition(cell)]);
 }
-function CreateMap(){
-    var game=document.getElementById('game');
-    for(var i=0;i<Map.length;i++){
-        for(var j=0;j<Map[i].length;j++){
-            game.innerHTML += ('<div id="'+i+'-'+j+'" class="cell '+((Map[i][j])? 'empty add':'wall')+'"></div>');
-            if((i== Coin.Top && j==Coin.Left) || (i== Ninja.Top && j==Ninja.Left))
-                game.lastChild.classList.remove("empty"), game.lastChild.classList.remove("add");
-            if(Map[i][j])
-            game.lastChild.setAttribute('onclick',"AddGuard(this)");
-        }
-    }
-    game.innerHTML += ('<div id="coin" class="cell char"></div>');
-    game.innerHTML += ('<div id="ninja" class="cell char" style="transform:rotate(0deg)" onclick="StartGame()"></div>');
-    UI.SetCellPosition(document.getElementById("coin"),Coin);
-    UI.SetCellPosition(document.getElementById("ninja"),Ninja);
-}
 
 function AreEqual(a,b){
     return a.Left==b.Left&&a.Top==b.Top;
 }
 
-function StartGame(){
-    var add = document.getElementsByClassName('add');
-    for(var i=0; i<add.length;) {
-        add[i].setAttribute('onclick','');
-        add[i].classList.remove('add');
-    }
-    Path = AStar();
-    console.log(Path);
-    if(Path==false){
-        document.getElementsByTagName('section')[1].style.display='block';
-        document.getElementById('ninja').setAttribute('onclick',"");
-        return;
-    }
-    UI.SimulateNinjaMove(0);
-    if(document.getElementById('ninja').getAttribute('onclick')=="") return;
-    document.getElementById('ninja').setAttribute('onclick',"");
-    setTimeout(function(){
-        if(!AreEqual(Path[Path.length-1],Coin)) return;
-	    UI.lastGuardPos=Path.length-1;
-        Path=new Array();
-        document.getElementById("coin").remove();
+function StartGame(ret,visualized){
+    if(ret){
         var tmp = Ninja.Top; Ninja.Top = Coin.Top; Coin.Top = tmp;
         tmp = Ninja.Left; Ninja.Left = Coin.Left; Coin.Left = tmp;
-        UI.CellHighlight="0.3";
-        StartGame();
-    },(Path.length+0.5)*300);
+    }
+    else if(visualized){
+        UI.RemoveAddGuard();
+    }
+    Path=new Array();
+    Path = AStar(!visualized);
+    console.log(Path);
+    if(visualized) {
+        UI.RunGame(ret);
+        if(!Path) {
+            UI.NoPath();
+            return;
+        }
+    }
+    //else
+    if(!visualized&&!ret) StartGame(1,0);
 }
 
+SizeX = prompt("Enter map height:");
+SizeX = parseInt(SizeX,10);
+SizeY = 2*SizeX;
+CellSize = 600/SizeX;
+Obstacles = prompt("Enter obstacles(%):");
+Obstacles = parseInt(Obstacles,10);
+Obstacles = Math.floor(Obstacles*SizeX*SizeY/100);
 Map = GenerateMap();
-CreateMap();
+var vis = prompt("Visualized?(1 or 0):");
+if(vis=="1") UI.CreateGame();
+else StartGame(0,0);
