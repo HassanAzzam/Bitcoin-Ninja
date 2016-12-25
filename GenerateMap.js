@@ -6,27 +6,24 @@ var arr = new Array(SizeX);
         for(var j=0;j<SizeY;j++)
             arr[i][j]=1;
     }
-        var obstacle=0;
-            while(obstacle!=65){
-                var random_obstacle_Top = Math.floor(Math.random()*SizeX);
-                var random_obstacle_Left = Math.floor(Math.random()*SizeY);
-                if(arr[random_obstacle_Top][random_obstacle_Left]!=0){
-                    arr[random_obstacle_Top][random_obstacle_Left]=0;
-                    obstacle++;
-                }
-            }
-            do{
-                Coin.Top = Math.floor(Math.random()*SizeX);
-                Coin.Left = Math.floor(Math.random()*SizeY);
-            }while((Coin.Top > (SizeX/2) || Coin.Left > (SizeX/2))
-                || (arr[Coin.Top][Coin.Left]==0));
-
-            do{
-                Ninja.Top = Math.floor(Math.random()*SizeX);
-                Ninja.Left = Math.floor(Math.random()*SizeY);
-            }while((Ninja.Top < (SizeX/2) || Ninja.Left < (3*SizeY/4)) || (arr[Ninja.Top][Ninja.Left]==0));
+    Coin.Top = Math.floor(Math.random()*(SizeX/4));
+    Coin.Left = Math.floor(Math.random()*(SizeY/4));
+    Ninja.Top = Math.floor(Math.random()*(SizeX/4)+(3*SizeX/4));
+    Ninja.Left = Math.floor(Math.random()*(SizeY/4)+(3*SizeY/4));
+    var obstacle=0;
+    while(obstacle!=Obstacles){
+        var random_obstacle = {
+            Top: Math.floor(Math.random()*SizeX),
+            Left: Math.floor(Math.random()*SizeY)
+        };
+        if(arr[random_obstacle.Top][random_obstacle.Left]!=0&&!AreEqual(random_obstacle,Ninja)&&!AreEqual(random_obstacle,Coin)){
+            arr[random_obstacle.Top][random_obstacle.Left]=0;
+            obstacle++;
+        }
+    }
     Map = arr;
-    var test = AStar(1);
+    //var test = AStar(1);
+    return arr;
     if(!test)
     return GenerateMap();
     return arr;

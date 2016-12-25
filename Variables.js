@@ -1,5 +1,6 @@
 var SizeX=12, SizeY=24;
 var CellSize=50;
+var Obstacles=0;
 var Path;
 var Coin={};
 var Ninja={};
@@ -24,9 +25,13 @@ var UI={
 			here.style.opacity=UI.CellHighlight;
 			if(here.style.backgroundColor=="red") here.style.backgroundColor="rgb(236, 65, 0)"
         }
-        else return;
+        else {
+			if(UI.CellHighlight=="0.2")
+			StartGame(1,1);
+			return;
+		}
 		UI.SimulateGuardMove(i);
-        setTimeout(UI.SimulateNinjaMove.bind(null,i+1),300);
+        setTimeout(UI.SimulateNinjaMove.bind(null,i+1),100);
     },
 
     SimulateGuardMove: function(cnt) {
@@ -109,5 +114,51 @@ var UI={
             item.setAttribute('onclick',"AddRange(this)");
             CurrentGuardMoves.push(item);
         });
-    }
+    },
+
+	RemoveAddGuard: function(){
+		var add = document.getElementsByClassName('add');
+	    for(var i=0; i<add.length;) {
+	        add[i].setAttribute('onclick','');
+	        add[i].classList.remove('add');
+	    }
+	},
+
+	NoPath: function(){
+	        document.getElementsByTagName('section')[1].style.display='block';
+	        document.getElementById('ninja').setAttribute('onclick',"");
+	},
+
+	RunGame: function(ret){
+		if(ret){
+	        document.getElementById("coin").remove();
+			UI.lastGuardPos=Path.length-1;
+	        UI.CellHighlight="0.3";
+		}
+		else{
+	    	document.getElementById('ninja').setAttribute('onclick',"");
+		}
+		UI.SimulateNinjaMove(0);
+	},
+
+	CreateGame: function(){
+	    var game=document.getElementById('game');
+	    var template="";
+	    for(var i=0;i<Map.length;i++){
+	        for(var j=0;j<Map[i].length;j++){
+	            var s = '<div id="'+i+'-'+j+'" style="width:'+CellSize+'px;height:'+CellSize+'px" class="cell '+((Map[i][j])? 'empty add':'wall');
+	            if((i== Coin.Top && j==Coin.Left) || (i== Ninja.Top && j==Ninja.Left))
+	                s=s.replace(s.length-1-'empty add'.length,'empty add'.length,'');
+	            s+='" onclick="';
+	            if(Map[i][j]) s+='AddGuard(this)';
+	            s+='"></div>';
+	            template+=s;
+	        }
+	    }
+	    template+='<div id="coin" class="cell char" style="width:'+CellSize+'px;height:'+CellSize+'px"></div>';
+	    template+='<div id="ninja" class="cell char" style="transform:rotate(0deg);width:'+CellSize+'px;height:'+CellSize+'px" onclick="StartGame(0,1)"></div>';
+	    game.innerHTML+=template;
+	    UI.SetCellPosition(document.getElementById("coin"),Coin);
+	    UI.SetCellPosition(document.getElementById("ninja"),Ninja);
+	}
 };
