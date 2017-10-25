@@ -31,7 +31,7 @@ var UI={
 			return;
 		}
 		UI.SimulateGuardMove(i);
-        setTimeout(UI.SimulateNinjaMove.bind(null,i+1),100);
+        setTimeout(UI.SimulateNinjaMove.bind(null,i+1),300);
     },
 
     SimulateGuardMove: function(cnt) {
